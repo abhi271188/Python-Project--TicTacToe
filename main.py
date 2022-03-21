@@ -21,7 +21,10 @@ def play_game():
         handle_turns(active_player)
         game_is_ended_or_not()
 
-    
+    if winner == 'X' or winner == 'O':
+        print(winner+' has won the game')
+    else:
+        print('Game is tied')
 # ------------------------------------------------------------------------------
 # ----------- A driver function that manages the turns of both players ---------
 def handle_turns(curr_player):
@@ -45,6 +48,8 @@ def check_for_win():
         winner = row_win
     elif col_win:
         winner = col_win
+    elif diag_win:
+        winner = diag_win
 # --------------------------------------------------------------------------------
 # ----------- A driver function that checks the pattern in the rows --------------
 def check_row_win():
