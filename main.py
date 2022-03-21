@@ -3,9 +3,9 @@ board = ['-', '-', '-',
          '-', '-', '-',
          '-', '-', '-']
 # ------------------------------------------------------------------------------
-active_player = 'X'                                     # first turn of the game
-game_is_still_active = True                             # Initially the game is active
-winner = None
+active_player = 'X'                             # first turn of the game
+game_is_still_active = True                     # Initially the game is active
+winner = None                                   # Shows the actual winner
 
 # ------------ A driver function that displays the game board-------------------
 def display_board():
@@ -21,6 +21,7 @@ def play_game():
         handle_turns(active_player)
         game_is_ended_or_not()
 
+    
 # ------------------------------------------------------------------------------
 # ----------- A driver function that manages the turns of both players ---------
 def handle_turns(curr_player):
@@ -36,12 +37,14 @@ def game_is_ended_or_not():
 # -------------------------------------------------------------------------------
 # ----------- A driver function that gives us the winner of the game ------------
 def check_for_win():
-    global active_player
+    global winner
     row_win = check_row_win()
-    #check_col_win()
-    #check_diag_win()
+    col_win = check_col_win()
+    diag_win = check_diag_win()
     if row_win:
         winner = row_win
+    elif col_win:
+        winner = col_win
 # --------------------------------------------------------------------------------
 # ----------- A driver function that checks the pattern in the rows --------------
 def check_row_win():
@@ -58,5 +61,31 @@ def check_row_win():
     else:
         return board[6]
 # ------------------------------------------------------------------------------------
-
+# ----------- A driver function that checks the pattern in the columns ---------------
+def check_col_win():
+    global game_is_still_active
+    col_1 = board[0] == board[3] == board[6] != '-'
+    col_2 = board[1] == board[4] == board[7] != '-'
+    col_3 = board[2] == board[5] == board[8] != '-'
+    if col_1 or col_2 or col_3:
+        game_is_still_active = False
+    if col_1:
+        return board[0]
+    elif col_2:
+        return board[1]
+    else:
+        return board[2]
+# -------------------------------------------------------------------------------------
+# ----------- A driver function that checks the pattern in the diagonals --------------
+def check_diag_win():
+    global game_is_still_active
+    diag_1 = board[0] == board[4] == board[8] != '-'
+    diag_2 = board[2] == board[4] == board[6] != '-'
+    if diag_1 or diag_2:
+        game_is_still_active = False
+    if diag_1:
+        return board[0]
+    elif diag_2:
+        return board[2]
+# -------------------------------------------------------------------------------------
 play_game()
