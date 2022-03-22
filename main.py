@@ -1,3 +1,4 @@
+# ------------ Global variables ------------------------------------------------
 # ------------ Design of the game board ----------------------------------------
 board = ['-', '-', '-',
          '-', '-', '-',
@@ -6,7 +7,7 @@ board = ['-', '-', '-',
 active_player = 'X'                             # first turn of the game
 game_is_still_active = True                     # Initially the game is active
 winner = None                                   # Shows the actual winner
-
+# ------------------------------------------------------------------------------
 # ------------ A driver function that displays the game board-------------------
 def display_board():
     print(board[0] + ' | ' + board[1] + ' | ' + board[2])
@@ -20,23 +21,32 @@ def play_game():
     while(game_is_still_active):
         handle_turns(active_player)
         game_is_ended_or_not()
-
+        switch_player()
     if winner == 'X' or winner == 'O':
-        print(winner+' has won the game')
-    else:
-        print('Game is tied')
+        print(winner+' has won the game.')
+    elif winner == None:
+        print('Game is tied.')
 # ------------------------------------------------------------------------------
 # ----------- A driver function that manages the turns of both players ---------
 def handle_turns(curr_player):
-    position = int(input('Enter the position from 1 to 9: '))
-    position = position - 1
+    print(curr_player+' \'s turn')
+    position = input('Enter the position from 1 to 9: ')
+    valid = False
+    while not valid:
+        if position not in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+            position = input('Invalid input. Choose a position from 1 to 9: ')
+        position = int(position) - 1
+        if board[position] == '-':
+            valid = True
+        else:
+            print('You can\'t go there. Try again.')
     board[position] = curr_player
     display_board()
 # -------------------------------------------------------------------------------
 # ----------- A driver function that checks whether the game is over or not -----
 def game_is_ended_or_not():
     check_for_win()
-    #check_for_tie()
+    check_for_tie()
 # -------------------------------------------------------------------------------
 # ----------- A driver function that gives us the winner of the game ------------
 def check_for_win():
@@ -93,4 +103,17 @@ def check_diag_win():
     elif diag_2:
         return board[2]
 # -------------------------------------------------------------------------------------
+# ------------ A driver function that checks the whether the game is tied or not ------
+def check_for_tie():
+    if '-' not in board:
+        print('The game is tied.')
+# -------------------------------------------------------------------------------------
+# ------------ A driver function that change the turn from X to O or O to X -----------
+def switch_player():
+    global active_player
+    if active_player == 'X':
+        active_player = 'O'
+    elif active_player == 'O':
+        active_player = 'X'
+
 play_game()
